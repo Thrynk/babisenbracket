@@ -1,0 +1,54 @@
+<html lang="fr">
+  <head>
+    <meta charset="utf-8">
+    <title>Bab'isen</title>
+    <link rel="stylesheet" type="text/css" href="assets/css/bootstrap/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="assets/css/jquery.bracket.min.css">
+    <link rel="stylesheet" type="text/css" href="assets/css/icons.css">
+    <script type="text/javascript" src="assets/js/bootstrap/bootstrap.min.js"></script>
+    <script type="text/javascript" src="assets/js/jquery-3.3.1.min.js"></script>
+    <script type="text/javascript" src="assets/js/jquery.bracket.min.js"></script>
+  </head>
+
+  <body>
+    <div class="container">
+      <h1 class="text-center">Bab'isen tournament</h1>
+      <form action="#" class="mt-4">
+        <div class="form-group">
+          <label for="equipe" class="sr-only">Nom de l'équipe :</label>
+          <input type="text" class="form-control" id="equipe" placeholder="Nom de l'équipe" required autofocus>
+        </div>
+        <div class="form-group">
+          <label for="joueur1" class="sr-only">Nom du Joueur 1 :</label>
+          <input type="text" class="form-control" id="joueur1" placeholder="Nom du Joueur 1" required>
+        </div>
+        <div class="form-group">
+          <label for="joueur2" class="sr-only">Nom du Joueur 2 :</label>
+          <input type="text" class="form-control" id="joueur2" placeholder="Nom du Joueur 2" required>
+        </div>
+        <button type="submit" class="btn btn-primary btn-block">Ajouter</button>
+      </form>
+
+      <table class="table table-borderless table-hover">
+        <thead>
+          <tr>
+            <th scope="col"></th>
+            <th scope="col">Nom de l'équipe</th>
+            <th scope="col">Nom du joueur 1</th>
+            <th scope="col">Nom du Joueur 2</th>
+          </tr>
+        </thead>
+        <tbody>
+
+        </tbody>
+      </table>
+
+      <button type="button" class="btn btn-success" id="tournamentCreateSimpleElimination">Créer un tournoi simple élimination</button>
+      <button type="button" class="btn btn-success float-right" id="tournamentCreateDoubleElimination">Créer un tournoi double élimination</button>
+
+      <div class="tournamentSimpleElimination ml-auto mr-auto mt-5 mb-5"></div>
+      <div class="tournamentDoubleElimination"></div>
+    </div>
+    <script type="text/javascript" src="assets/js/index.js"></script>
+  </body>
+</html>
