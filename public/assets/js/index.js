@@ -16,34 +16,27 @@
 
   function buildMatchs(teams){
     var matchs = [];
-    if(teams.length % 2 != 0){
-      for(var i = 0; i < teams.length - 1; i+=2){
-        matchs.push([ teams[i], teams[i + 1] ]);
-      }
-      matchs.push([teams[teams.length - 1], null]);
+    console.log(teams);
+    var n = 0;
+    while(teams.length > Math.pow(2, n)){
+      n++;
     }
-    else{
-      for(var i = 0; i < teams.length; i+=2){
-        matchs.push([ teams[i], teams[i + 1] ]);
-      }
+    var roundsToEquilibrate = teams.length - Math.pow(2, n - 1);
+    var roundsToComplete = Math.pow(2, n);
+    var i = 0;
+    while( i < roundsToEquilibrate * 2){
+      matchs.push([ teams[i], teams[i + 1] ]);
+      i+=2;
+    }
+    for(var j = i; j < teams.length; j++){
+      matchs.push([teams[j], null]);
+      i+=2;
+    }
+    for(var j = i; j < roundsToComplete; j++){
+      matchs.push([null,null]);
     }
     console.log(matchs);
     return matchs;
-  }
-
-  function buildScores(matchs){
-    var scores = [];
-    var n = matchs.length;
-    while(n > 1){
-      var temp = [];
-      for(var i = 0; i < n; i++){
-        temp.push([null, null]);
-      }
-      scores.push(temp);
-      n /= 2;
-    }
-    scores.push([[null,null], [null, null]])
-    return scores;
   }
 
   $( "form" ).submit(function( event ) {
@@ -72,6 +65,7 @@
     }
 
     $('form').trigger("reset");
+    equipe.focus();
   });
 
   $("#tournamentCreateSimpleElimination").click(function(){
@@ -83,19 +77,54 @@
     }
     teams = shuffle(teams);
     var matchs = buildMatchs(teams);
-    var scores = buildScores(matchs);
     if(matchs == undefined){
       matchs = [];
     }
-    console.log(scores);
     $(".tournamentSimpleElimination").bracket({
       init: {
         teams: matchs,
       },
-      disableToolbar: false,
-      matchMargin: 100,
+      disableToolbar: true,
+      matchMargin: 50,
       teamWidth: 100,
-      save: function(){}
+      centerConnectors: true,
+      save: function(){},
+      decorator: {
+        render: function(container, data, score, state) {
+                switch(state) {
+                  case "empty-bye":
+                    container.parent().hide();
+                    break;
+                  case "empty-tbd":
+                    container.append("Upcoming");
+                    break;
+                  case "entry-no-score":
+                    container.append(data);
+                    break;
+                  case "entry-default-win":
+                    container.parent().hide();
+                    break;
+                  case "entry-complete":
+                    container.append(data);
+                    break;
+                }
+              },
+        edit: function(container, data, doneCb) {
+                var input = $('<input type="text">')
+                input.val(data ? data.flag + ':' + data.name : '')
+                container.html(input)
+                input.focus()
+                input.blur(function() {
+                  var inputValue = input.val()
+                  if (inputValue.length === 0) {
+                    doneCb(null); // Drop the team and replace with BYE
+                  } else {
+                    var flagAndName = inputValue.split(':') // Expects correct input
+                    doneCb({flag: flagAndName[0], name: flagAndName[1]})
+                  }
+                })
+              }
+      }
     });
   });
 })();
